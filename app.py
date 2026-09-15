@@ -24,7 +24,7 @@ def get_automatic_info(name):
     if any(k in name for k in ["고기", "삼겹살", "소", "돼지", "닭"]):
         return {"expiry": "냉장 1~3일 / 냉동 보관 시 3~6개월 내외", "storage": "핏물을 닦고 식용유를 발라 밀폐용기에 담아 보관하세요.", "alternatives": ["소시지", "햄", "두부"]}
     else:
-        return {"expiry": "냉장 보관 시 일반적으로 3~7일 내외 권장", "storage": "지퍼백에 담아 외부 공기를 차단한 후 냉장 보관하세요.", "alternatives": ["두부", "계란"]}
+        return {"expiry": "냉장 보관 시 일반적으로 3~7일 내외 권장", "storage": "지퍼백에 담아 외부 공기를 차단한 후 냉장 보관하세요.", "alternatives": ["두부", "계란", "양배추"]}
 
 # 기능 1: 없는 재료 직접 입력창
 st.subheader("➕ 없는 재료 직접 입력하기")
@@ -59,20 +59,20 @@ if selected_ingredients:
         st.info(f"📅 **추천 유통기한:** {info['expiry']}\n\n📦 **권장 보관 방법:** {info['storage']}\n\n🔄 **대체재:** {', '.join(info['alternatives'])}")
     st.divider()
 
-# 기능 4: [완벽 해결] 꼬임 요소를 완벽히 제거한 실시간 인코딩 안전 주소 엔진
+# 기능 4: 블로그 탭 필터링이 주입된 실시간 레시피 링크 연동 엔진
 st.subheader("🍽️ 실시간 인터넷 검색 레시피 결과")
 if selected_ingredients:
-    # 🌟 한글이 인코딩될 때 절대 깨지지 않도록 별도의 파라미터 사전 객체를 생성하여 주소 생성
     keyword_text = " ".join(selected_ingredients) + " 레시피"
+    
+    # 🌟 [핵심 수정] 네이버 통합검색이 아닌 '블로그 탭' 전용 파라미터(where=blog)를 안전하게 인코딩 결합했습니다.
     params = {"where": "blog", "query": keyword_text}
     yt_params = {"search_query": keyword_text}
     
-    # urllib.parse.urlencode 형식을 사용하여 브라우저 강제 왜곡 원천 차단
     naver_url = f"https://naver.com?{urllib.parse.urlencode(params)}"
     youtube_url = f"https://youtube.com?{urllib.parse.urlencode(yt_params)}"
     
     st.write(f"✨ **[{', '.join(selected_ingredients)}]** 조합 레시피를 검색할 준비가 되었습니다.")
-    st.write("아래 버튼을 누르면 인코딩 오류 없이 네이버 블로그 검색 페이지와 유튜브 동영상 목록으로 바로 이동합니다.")
+    st.write("아래 버튼을 누르면 네이버 블로그 레시피 검색 탭과 유튜브 동영상 목록으로 각각 안전하게 이동합니다.")
     st.write("")
     
     btn_col1, btn_col2 = st.columns(2)
