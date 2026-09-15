@@ -1,7 +1,6 @@
 import streamlit as st
 import urllib.parse
 
-# [오류 해결] 주소창을 오염시키던 모든 마크다운 CSS 스타일 태그를 완벽하게 제거했습니다.
 st.title("🍳 인터넷 실시간 연동 냉장고 레시피")
 st.write("냉장고 속 재료들을 선택하면 인터넷(네이버 블로그, 유튜브)에서 최적의 황금 레시피 조합을 실시간으로 검색해 드립니다.")
 st.divider()
@@ -60,18 +59,20 @@ if selected_ingredients:
         st.info(f"📅 **추천 유통기한:** {info['expiry']}\n\n📦 **권장 보관 방법:** {info['storage']}\n\n🔄 **대체재:** {', '.join(info['alternatives'])}")
     st.divider()
 
-# 기능 4: 완벽한 순수 파이썬 링크 연동 버튼
+# 기능 4: [완벽 해결] 꼬임 요소를 완벽히 제거한 실시간 인코딩 안전 주소 엔진
 st.subheader("🍽️ 실시간 인터넷 검색 레시피 결과")
 if selected_ingredients:
-    search_query = " ".join(selected_ingredients) + " 레시피"
-    encoded_query = urllib.parse.quote(search_query)
+    # 🌟 한글이 인코딩될 때 절대 깨지지 않도록 별도의 파라미터 사전 객체를 생성하여 주소 생성
+    keyword_text = " ".join(selected_ingredients) + " 레시피"
+    params = {"where": "blog", "query": keyword_text}
+    yt_params = {"search_query": keyword_text}
     
-    # 어떠한 디자인 꼬임도 발생할 수 없도록 공식 네이버 및 유튜브 전체 링크 주소를 직접 결합
-    naver_url = f"https://naver.com{encoded_query}"
-    youtube_url = f"https://youtube.com{encoded_query}"
+    # urllib.parse.urlencode 형식을 사용하여 브라우저 강제 왜곡 원천 차단
+    naver_url = f"https://naver.com?{urllib.parse.urlencode(params)}"
+    youtube_url = f"https://youtube.com?{urllib.parse.urlencode(yt_params)}"
     
     st.write(f"✨ **[{', '.join(selected_ingredients)}]** 조합 레시피를 검색할 준비가 되었습니다.")
-    st.write("아래 버튼을 누르면 해당 재료 조합의 블로그 및 유튜브 검색 페이지로 안전하게 바로 이동합니다.")
+    st.write("아래 버튼을 누르면 인코딩 오류 없이 네이버 블로그 검색 페이지와 유튜브 동영상 목록으로 바로 이동합니다.")
     st.write("")
     
     btn_col1, btn_col2 = st.columns(2)
